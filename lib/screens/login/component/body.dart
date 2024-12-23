@@ -26,7 +26,7 @@ class LoginBody extends StatefulWidget {
 
 class LoginBodyState extends State<LoginBody> {
   static Users? user;
-  // static Numerology? data;
+
   bool _isLoading = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -101,15 +101,25 @@ class LoginBodyState extends State<LoginBody> {
                           email: email,
                           password: pass,
                         );
-                        user = await firestoreService.getData(email);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return HomePageScreen();
-                            },
-                          ),
-                        );
+                        // user = await firestoreService.getData(email);
+                        User? user = FirebaseAuth.instance.currentUser;
+                        await user?.reload();
+
+                        if(user != null && !user.emailVerified){
+                          await user.sendEmailVerification();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Verification email sent again!Please verified before login!')),
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return HomePageScreen();
+                              },
+                            ),
+                          );
+                        }
                       } on FirebaseAuthException catch (e) {
                         print("Error Code: ${e.code}");
                         print("Error Message: ${e.message}");

@@ -27,14 +27,25 @@ class _BodyState extends State<Body> {
   String pass = '';
   String name = '';
 
-  // DateTime? doB;
-  // DateTime? _selectedDate;
   final _fullNameController = TextEditingController();
-
-  // final  _doBController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
+
+  Future<void> updateDisplayName(String name) async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      try {
+        // Cập nhật thông tin người dùng
+        await user.updateDisplayName(name);
+        await user.reload();
+        user = FirebaseAuth.instance.currentUser;
+      } catch (e) {
+        print("Error updating display name: $e");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,25 +78,6 @@ class _BodyState extends State<Body> {
                 name = value;
               },
             ),
-            // SizedBox(
-            //   height: size.height * 0.02,
-            // ),
-            // DatePickerField(
-            //     hintText: 'Date of birth',
-            //     controller: _doBController,
-            //     onTap: () async {
-            //       final DateTime? picked = await pickDate(context);
-            //       if (picked != null) {
-            //         setState(() {
-            //           _selectedDate = picked;
-            //           _doBController.text =
-            //               '${picked.day}/${picked.month}/${picked.year}';
-            //         });
-            //         // onChanged: (value) {
-            //         //   doB = value;
-            //         // },
-            //       }
-            //     }),
             SizedBox(
               height: size.height * 0.02,
             ),
@@ -157,12 +149,21 @@ class _BodyState extends State<Body> {
                     email: email,
                     password: pass,
                   );
+
+                  User? user = userCredential.user;
+                  if (user != null && !user.emailVerified) {
+                    await user.sendEmailVerification();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Verification email sent! Check your inbox.')),
+                    );
+                  }
+
+                  await updateDisplayName(name);
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Registration successful!')),
                   );
-                  final user = userCredential.user;
-                  // Lấy dữ liệu tương ứng với email đăng nhập
-                  // await getData(email);
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -227,9 +228,6 @@ class _BodyState extends State<Body> {
                 _saveData(
                   email,
                   name,
-                  // _selectedDate!.day.toString(),
-                  // _selectedDate!.month.toString(),
-                  // _selectedDate!.year.toString(),
                 );
               },
               text: 'SIGN UP',
@@ -261,16 +259,10 @@ class _BodyState extends State<Body> {
   Future<void> _saveData(
       String email,
       String name,
-      // String day,
-      // String month,
-      // String year,
       ) async {
     final data = {
       'email': email,
       'name': name,
-      // 'day': day,
-      // 'month': month,
-      // 'year': year,
     };
   }
 }

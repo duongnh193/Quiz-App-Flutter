@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/constant.dart';
 import 'package:quiz_app/screens/welcome/welcome_screen.dart';
@@ -11,9 +12,22 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   bool notifcation = true;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = _auth.currentUser;
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
+    String userName = _user?.displayName ?? "No Name";
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey.shade200,
@@ -40,8 +54,8 @@ class _ProfileState extends State<Profile> {
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(4),
                     onTap: () {},
-                    title: const Text(
-                      'Duong',
+                    title: Text(
+                        userName,
                       style: TextStyle(
                           fontSize: 19,
                           color: kSecondaryColor,
@@ -194,6 +208,7 @@ class _ProfileState extends State<Profile> {
                 color: Colors.blue.shade800,
                 child: ListTile(
                   onTap: () async {
+                    await signOut();
                     Navigator.push(
                       context,
                       MaterialPageRoute(

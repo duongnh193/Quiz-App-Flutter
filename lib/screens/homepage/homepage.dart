@@ -97,7 +97,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   List<bool> state_b = [true, false, false, false, false];
   List<Widget> widgets = [
     const HomeScreen(),
-    const Courses(results: [],),
+    const Courses(),
     const Search(),
     const Messages(),
     const Profile()

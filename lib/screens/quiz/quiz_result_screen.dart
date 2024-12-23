@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/data/questions.dart';
 import 'package:quiz_app/models/quiz.dart';
 import 'package:quiz_app/screens/HomeScreen/Courses.dart';
+import 'package:quiz_app/screens/homepage/homepage.dart';
 import 'package:quiz_app/screens/quiz/quiz_menu.dart';
 
 import '../../constant.dart';
+import '../../controller/authentication/shared_preference_helper.dart';
 import '../../models/generate_quiz.dart';
 import 'component/sumary_result.dart';
 
@@ -13,12 +15,14 @@ class ResultsScreen extends StatelessWidget {
     super.key,
     required this.chosenAnswers,
     required this.onRestart,
-    required this.results,
+    required this.startTime,
+    // required this.results,
   });
 
   final void Function() onRestart;
   final List<String> chosenAnswers;
-  final List<Result> results;
+  final DateTime startTime;
+  // final List<Result> results;
 
 
   List<Map<String, Object>> getSummaryData() {
@@ -42,7 +46,7 @@ class ResultsScreen extends StatelessWidget {
     final numCorrectQuestions = getSummaryData().where((data) {
       return data['user_answer'] == data['correct_answer'];
     }).length;
-    final startTime = DateTime.now();
+    // final startTime = DateTime.now();
     final endTime = DateTime.now();
     final duration = endTime.difference(startTime);
 
@@ -83,16 +87,19 @@ class ResultsScreen extends StatelessWidget {
                   fixedSize: Size(150, 40)
               ),
               icon: const Icon(Icons.undo),
-              onPressed: (){
-                results.add(Result(
+              onPressed: () async {
+                final newResult = Result(
                     numCorrect: numCorrectQuestions,
                     numTotal: numTotalQuestions,
-                    timeTaken: duration)
+                    timeTaken: duration
                 );
+                final currentResults = await SharedPreferenceHelper.loadResults();
+                currentResults.add(newResult);
+                await SharedPreferenceHelper.saveResults(currentResults);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Courses(results : results),
+                        builder: (context) => HomePageScreen(),
                         )
                 );
               },

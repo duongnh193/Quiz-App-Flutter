@@ -1,3 +1,4 @@
+import 'dart:convert';
 class QuizQuestion {
   const QuizQuestion(this.text, this.answers);
 
@@ -21,6 +22,23 @@ class Result {
     required this.numTotal,
     required this.timeTaken,
   });
+
+  Map<String, dynamic> toJson(){
+    return {
+      'numCorrect': numCorrect,
+      'numTotal': numTotal,
+      'timeTaken': timeTaken.inSeconds,
+    };
+  }
+
+  // convert to result
+  factory Result.fromJson(Map<String, dynamic> json) {
+    return Result(
+      numCorrect: json['numCorrect'],
+      numTotal: json['numTotal'],
+      timeTaken: Duration(seconds: json['timeTaken']),
+    );
+  }
 
 }
 

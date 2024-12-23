@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz_app/controller/authentication/shared_preference_helper.dart';
 import 'package:quiz_app/models/generate_quiz.dart';
 import 'package:quiz_app/screens/homepage/homepage.dart';
 
@@ -7,8 +8,7 @@ import '../../constant.dart';
 import '../../data/questions.dart';
 
 class Courses extends StatefulWidget {
-  const Courses({Key? key, required this.results}) : super(key: key);
-  final List<Result> results;
+  const Courses({Key? key}) : super(key: key);
 
   @override
   _CoursesState createState() => _CoursesState();
@@ -20,12 +20,20 @@ class _CoursesState extends State<Courses> {
 
   void initState() {
     super.initState();
-    _results = widget.results ;
+    _loadResults();
   }
 
-  void _clearResults() {
+  Future<void> _loadResults() async {
+    final results = await SharedPreferenceHelper.loadResults();
     setState(() {
-      _results.clear();
+      _results = results;
+    });
+  }
+
+  Future<void> _clearResults() async {
+    await SharedPreferenceHelper.saveResults([]);
+    setState(() {
+      _results = [];
     });
   }
 
@@ -113,6 +121,7 @@ class _CoursesState extends State<Courses> {
                         setState(() {
                           _results.removeAt(index);
                         });
+                        SharedPreferenceHelper.saveResults(_results);
                       },
                       icon: Icon(Icons.delete_forever)
                   ),

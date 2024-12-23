@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class StartScreen extends StatelessWidget {
   const StartScreen(this.startQuiz, {super.key});
 
-  final void Function() startQuiz;
+  final void Function(DateTime startTime) startQuiz;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,10 @@ class StartScreen extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.white,
             ),
-            onPressed: startQuiz,
+            onPressed: (){
+              DateTime startTime = DateTime.now();
+              startQuiz(startTime);
+            },
             label: const Text('Start Quiz'),
           ),
         ],

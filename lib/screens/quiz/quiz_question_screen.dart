@@ -4,9 +4,10 @@ import 'package:quiz_app/data/questions.dart';
 import 'component/answer_button.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key, required this.onSelectAnswer});
+  const QuestionsScreen({super.key, required this.onSelectAnswer, required this.startTime});
 
   final void Function(String answer) onSelectAnswer;
+  final DateTime startTime;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
