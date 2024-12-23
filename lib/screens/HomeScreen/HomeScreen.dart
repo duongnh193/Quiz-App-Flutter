@@ -28,71 +28,68 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SafeArea(
-        child: SingleChildScrollView(
+        child: Container(
             child: Container(
-      margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.all(10),
-      color: kPrimaryBackgroundColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+              height: size.height,
+              padding: const EdgeInsets.all(20),
+              color: kPrimaryBackgroundColor,
+              child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                width: 360,
-                height: 120,
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 107, 140, 254),
-                    borderRadius: BorderRadius.circular(30)),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Welcome to',
-                          style: TextStyle(color: kSecondaryColor, fontSize: 15),
-                        ),
-                        const Text(
-                          'Quiz App English ',
-                          style: TextStyle(
-                              color: kSecondaryColor,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 40,
-                    ),
-                    const Icon(
-                      Icons.notifications,
-                      color: kSecondaryColor,
-                      size: 33,
-                    ),
-                  ],
+          Container(
+            padding: const EdgeInsets.all(20),
+            width: size.width * 0.8,
+            height: size.height * 0.14,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 107, 140, 254),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start, // Đẩy nội dung lên trên
+              children: [
+                // Text nằm bên trái
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Welcome to',
+                        style: TextStyle(color: kSecondaryColor, fontSize: 15),
+                      ),
+                      const Text(
+                        'Quiz App English ',
+                        style: TextStyle(
+                            color: kSecondaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-            ],
+                // Icon nằm ở góc trên phải
+                Align(
+                  alignment: Alignment.topRight,
+                  child: const Icon(
+                    Icons.notifications,
+                    color: kSecondaryColor,
+                    size: 34,
+                  ),
+                ),
+              ],
+            ),
           ),
+
           const SizedBox(
-            height: 20,
+            height: 40,
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          //
           Container(
             alignment: Alignment.center,
             child: Image.asset(
               "assets/images/logo.jpeg",
-              width: 200,
-              height: 150,
+              width: double.infinity,
+              height: size.height*0.22,
             ),
           ),
           const SizedBox(
@@ -117,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     decoration: BoxDecoration(
                         color: kPrimaryColor,
                         borderRadius: BorderRadius.circular(25)),
-                    width: 280,
+                    width: size.width*0.6,
                     child: Material(
                       color: Colors.transparent,
                       child: Column(
@@ -187,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                       color: kPrimaryColor,
                       borderRadius: BorderRadius.circular(25)),
-                  width: 280,
+                  width: size.width*0.6,
                   child: Material(
                     color: Colors.transparent,
                     child: Column(
@@ -263,7 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                       color: kPrimaryColor,
                       borderRadius: BorderRadius.circular(25)),
-                  width: 280,
+                  width: size.width*0.6,
                   child: Material(
                     color: Colors.transparent,
                     child: Column(
@@ -336,8 +333,8 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 65,
           ),
         ],
-      ),
-    )));
+              ),
+            )));
   }
 
   showLoaderDialog(BuildContext context) async {

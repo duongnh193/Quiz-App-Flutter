@@ -2,54 +2,90 @@ import 'package:quiz_app/models/generate_quiz.dart';
 
 const questions = [
   QuizQuestion(
-    'What are the main building blocks of Flutter UIs?',
+    "What is the meaning of 'ephemeral'?",
     [
-      'Widgets',
-      'Components',
-      'Blocks',
-      'Functions',
+      "Temporary",
+      "Long-lasting",
+      "Permanent",
+      "Infinite"
     ],
   ),
-  QuizQuestion('How are Flutter UIs built?', [
-    'By combining widgets in code',
-    'By combining widgets in a visual editor',
-    'By defining widgets in config files',
-    'By using XCode for iOS and Android Studio for Android',
+  QuizQuestion("Select the correct meaning of 'ambivalent':", [
+    "Indecisive",
+    "Confident",
+    "Courageous",
+    "Determined"
   ]),
   QuizQuestion(
-    'What\'s the purpose of a StatefulWidget?',
+    "What does 'eloquent' mean?",
     [
-      'Update UI as data changes',
-      'Update data as UI changes',
-      'Ignore data changes',
-      'Render UI that does not depend on data',
+      "Articulate",
+      "Rude",
+      "Irritable",
+      "Silent"
     ],
   ),
   QuizQuestion(
-    'Which widget should you try to use more often: StatelessWidget or StatefulWidget?',
+    "Choose the appropriate meaning for 'pristine':",
     [
-      'StatelessWidget',
-      'StatefulWidget',
-      'Both are equally good',
-      'None of the above',
+      "Untouched",
+      "Dirty",
+      "Tarnished",
+      "Damaged"
     ],
   ),
   QuizQuestion(
-    'What happens if you change data in a StatelessWidget?',
+    "What is the meaning of 'magnanimous'?",
     [
-      'The UI is not updated',
-      'The UI is updated',
-      'The closest StatefulWidget is updated',
-      'Any nested StatefulWidgets are updated',
+      "Generous",
+      "Selfish",
+      "Vindictive",
+      "Greedy"
     ],
   ),
   QuizQuestion(
-    'How should you update data inside of StatefulWidgets?',
+    "What is the meaning of 'eloquent'?",
     [
-      'By calling setState()',
-      'By calling updateData()',
-      'By calling updateUI()',
-      'By calling updateState()',
+      "Expressive",
+      "Inarticulate",
+      "Meaningless",
+      "Verbose"
+    ],
+  ),
+  QuizQuestion(
+    "Choose the correct meaning of 'alacrity':",
+    [
+      "Promptness",
+      "Lethargy",
+      "Reluctance",
+      "Boredom"
+    ],
+  ),
+  QuizQuestion(
+    "What does 'zealous' mean?",
+    [
+      "Enthusiastic",
+      "Apathetic",
+      "Indifferent",
+      "Cautious"
+    ],
+  ),
+  QuizQuestion(
+    "Select the appropriate meaning for 'furtive':",
+    [
+      "Covert",
+      "Honest",
+      "Genuine",
+      "Obvious"
+    ],
+  ),
+  QuizQuestion(
+    "What is the meaning of 'ubiquitous'?",
+    [
+      "Widespread",
+      "Scarce",
+      "Rare",
+      "Limited"
     ],
   ),
 ];

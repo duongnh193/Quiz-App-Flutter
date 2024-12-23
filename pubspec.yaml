@@ -82,6 +82,7 @@ flutter:
     - assets/images/5stars.jpg
     - assets/images/3star.jpeg
     - assets/images/quiz-logo.png
+    - assets/images/quizbg.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

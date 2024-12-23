@@ -10,6 +10,7 @@ class QuestionsSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SizedBox(
       height: 300,
       child: SingleChildScrollView(
@@ -25,16 +26,17 @@ class QuestionsSummary extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(width: 15),
+                const SizedBox(width: 20),
                 Expanded(
                   child: Container(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+
                       children: [
                         Container(
                           color: Colors.grey[200],
-                          width: 300,
-                          padding: EdgeInsets.all(5),
+                          width: size.width*0.68,
+                          padding: EdgeInsets.all(10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

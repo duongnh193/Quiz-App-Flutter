@@ -127,7 +127,7 @@ class _QuizMenuState extends State<QuizMenu> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const QuizMenu();
+                          return const Quiz();
                         },
                       ),
                     );
