@@ -5,14 +5,12 @@ import 'package:quiz_app/constant.dart';
 import '../../../widgets/date_picker_field.dart';
 import '../../../widgets/format_dialog.dart';
 import '../../login/component/account_check.dart';
-import '../../login/component/forgot_button.dart';
 import '../../login/component/or_divider.dart';
-import '../../login/component/round_outline_button.dart';
 import '../../login/component/rounded_input_field.dart';
 import '../../login/component/rounded_password_field.dart';
 import '../../login/login_screen.dart';
 import '../../../widgets/rounded_button.dart';
-import '../sign_up_screen.dart';
+import 'package:quiz_app/controller/authentication/firebase_auth_services.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -22,21 +20,27 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  final FirebaseAuthServices _auth = FirebaseAuthServices();
+
   bool _isLoading = false;
   String email = '';
   String pass = '';
   String name = '';
-  DateTime? doB;
-  DateTime? _selectedDate;
+
+  // DateTime? doB;
+  // DateTime? _selectedDate;
   final _fullNameController = TextEditingController();
-  final TextEditingController _doBController = TextEditingController();
+
+  // final  _doBController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return SingleChildScrollView(
       child: SizedBox(
         height: size.height,
@@ -50,7 +54,10 @@ class _BodyState extends State<Body> {
                   top: size.height * 0.06, bottom: size.height * 0.04),
               child: Text(
                 'CREATE YOUR ACCOUNT',
-                style: Theme.of(context).textTheme.displaySmall,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .displaySmall,
               ),
             ),
             RoundedInputField(
@@ -60,25 +67,25 @@ class _BodyState extends State<Body> {
                 name = value;
               },
             ),
-            SizedBox(
-              height: size.height * 0.02,
-            ),
-            DatePickerField(
-                hintText: 'Date of birth',
-                controller: _doBController,
-                onTap: () async {
-                  final DateTime? picked = await pickDate(context);
-                  if (picked != null) {
-                    setState(() {
-                      _selectedDate = picked;
-                      _doBController.text =
-                          '${picked.day}/${picked.month}/${picked.year}';
-                    });
-                    // onChanged: (value) {
-                    //   doB = value;
-                    // },
-                  }
-                }),
+            // SizedBox(
+            //   height: size.height * 0.02,
+            // ),
+            // DatePickerField(
+            //     hintText: 'Date of birth',
+            //     controller: _doBController,
+            //     onTap: () async {
+            //       final DateTime? picked = await pickDate(context);
+            //       if (picked != null) {
+            //         setState(() {
+            //           _selectedDate = picked;
+            //           _doBController.text =
+            //               '${picked.day}/${picked.month}/${picked.year}';
+            //         });
+            //         // onChanged: (value) {
+            //         //   doB = value;
+            //         // },
+            //       }
+            //     }),
             SizedBox(
               height: size.height * 0.02,
             ),
@@ -112,64 +119,121 @@ class _BodyState extends State<Body> {
             ),
             _isLoading
                 ? const CircularProgressIndicator(
-                    backgroundColor: kPrimaryColor,
-                  )
+              backgroundColor: kPrimaryColor,
+            )
                 : RoundedButton(
-                    press: () async {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      if (_passwordController.text !=
-                          _passwordConfirmController.text) {
-                        FormatDialog(
-                          text: 'Resigter Failed',
+              press: () async {
+                setState(() {
+                  _isLoading = true;
+                });
+                if (_passwordController.text !=
+                    _passwordConfirmController.text) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return FormatDialog(
+                        text: 'Register Failed',
+                        styleText: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        styleSubText: const TextStyle(fontSize: 16.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal),
+                        subtext: 'Password does not match, Please check again',
+                      );
+                    },
+                  );
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  return;
+                }
+                try {
+                  UserCredential userCredential = await FirebaseAuth
+                      .instance
+                      .createUserWithEmailAndPassword(
+                    email: email,
+                    password: pass,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Registration successful!')),
+                  );
+                  final user = userCredential.user;
+                  // Lấy dữ liệu tương ứng với email đăng nhập
+                  // await getData(email);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return LoginScreen();
+                      },
+                    ),
+                  );
+                } on FirebaseAuthException catch (e) {
+                  // print("Error Code: ${e.code}");
+                  // print("Error Message: ${e.message}");
+                  if (e.code == 'weak-password') {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return FormatDialog(
+                          text: 'Register Failed',
                           styleText: const TextStyle(
+                            color: Colors.black,
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                           ),
-                          styleSubText: const TextStyle(fontSize: 16.0),
-                          subtext:
-                              'Password does not match, Please check again',
+                          subtext: 'Password weak, Please try again',
+                          styleSubText: const TextStyle(fontSize: 16.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal),
                         );
-                      }
-                      try {
-                        UserCredential userCredential = await FirebaseAuth
-                            .instance
-                            .createUserWithEmailAndPassword(
-                          email: email,
-                          password: pass,
-                        );
-                        final user = userCredential.user;
-                        // Lấy dữ liệu tương ứng với email đăng nhập
-                        // await getData(email);
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) {
-                        //       return HomePageScreen();
-                        //     },
-                        //   ),
-                        // );
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          print('Password week');
-                        } else if (e.code == "email-already-in-use") {
-                          print('Account exists');
+                      },
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  } else if (e.code == "email-already-in-use") {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return FormatDialog(
+                            text: 'Resigter Failed',
+                            styleText: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            styleSubText: const TextStyle(fontSize: 16.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal),
+                            subtext:
+                            'The email address is already in use by another account',
+                          );
                         }
-                      }
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      _saveData(
-                        email,
-                        name,
-                        _selectedDate!.day.toString(),
-                        _selectedDate!.month.toString(),
-                        _selectedDate!.year.toString(),
-                      );
-                    },
-                    text: 'SIGN UP',
-                  ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+                }
+                setState(() {
+                  _isLoading = false;
+                });
+                _saveData(
+                  email,
+                  name,
+                  // _selectedDate!.day.toString(),
+                  // _selectedDate!.month.toString(),
+                  // _selectedDate!.year.toString(),
+                );
+              },
+              text: 'SIGN UP',
+            ),
             AccountCheck(
               text: 'Already have an account?',
               textBtn: ' Log in',
@@ -188,24 +252,6 @@ class _BodyState extends State<Body> {
             SizedBox(
               height: size.height * 0.05,
             ),
-            // RoundedOutlineButton(
-            //   textBtn: 'Sign in with Google',
-            //   press: () {},
-            //   icon: 'assets/icons/google.png',
-            //   margin: size.width * 0.15,
-            // ),
-            // RoundedOutlineButton(
-            //   textBtn: 'Sign in with Apple',
-            //   press: () {},
-            //   icon: 'assets/icons/apple-logo.png',
-            //   margin: size.width * 0.15,
-            // ),
-            // RoundedOutlineButton(
-            //   textBtn: 'Sign in with Facebook',
-            //   press: () {},
-            //   icon: 'assets/icons/facebook.png',
-            //   margin: size.width * 0.15,
-            // ),
           ],
         ),
       ),
@@ -213,47 +259,18 @@ class _BodyState extends State<Body> {
   }
 
   Future<void> _saveData(
-    String email,
-    String name,
-    String day,
-    String month,
-    String year,
-  ) async {
+      String email,
+      String name,
+      // String day,
+      // String month,
+      // String year,
+      ) async {
     final data = {
       'email': email,
       'name': name,
-      'day': day,
-      'month': month,
-      'year': year,
+      // 'day': day,
+      // 'month': month,
+      // 'year': year,
     };
-    await FirebaseFirestore.instance.collection('Number').doc().set(data);
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Saved')));
   }
-
-  Future<DateTime?> pickDate(BuildContext context) async {
-    DateTime? initialDate = _selectedDate ?? DateTime.now();
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: DateTime(1800),
-      lastDate: DateTime(2030),
-    );
-    return picked;
-  }
-
-  // Future<void> getData(String email) async {
-  //   final userCollection = FirebaseFirestore.instance.collection('users');
-  //   final querySnapshot =
-  //       await userCollection.where('email', isEqualTo: email).get();
-
-  //   if (querySnapshot.docs.isNotEmpty) {
-  //     final userData = querySnapshot.docs.first.data();
-  //     // Hiển thị dữ liệu lên màn hình
-  //     print('User data: $userData');
-  //   } else {
-  //     // Không tìm thấy dữ liệu
-  //     print('No data found for email: $email');
-  //   }
-  // }
 }

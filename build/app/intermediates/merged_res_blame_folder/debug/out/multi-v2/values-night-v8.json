@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.quiz_app-mergeDebugResources-28:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.quiz_app-mergeDebugResources-31:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/home/duongnh/AndroidStudioProjects/quiz_app/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/home/duongnh/Projects/Flutter/flutterProject/Quiz-App-Flutter/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

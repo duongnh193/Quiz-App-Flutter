@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/controller/authentication/get_data.dart';
@@ -9,8 +8,6 @@ import '../../forgot/forgot_screen.dart';
 import '../../homepage/homepage.dart';
 import '../../sign_up/sign_up_screen.dart';
 import '../../../widgets/rounded_button.dart';
-import '../login_screen.dart';
-import 'package:quiz_app/constant.dart';
 import 'account_check.dart';
 import 'forgot_button.dart';
 import '../../../widgets/format_dialog.dart';
@@ -18,6 +15,7 @@ import 'or_divider.dart';
 import 'round_outline_button.dart';
 import 'rounded_input_field.dart';
 import 'rounded_password_field.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
@@ -32,6 +30,7 @@ class LoginBodyState extends State<LoginBody> {
   bool _isLoading = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   String email = '';
   String pass = '';
 
@@ -102,11 +101,7 @@ class LoginBodyState extends State<LoginBody> {
                           email: email,
                           password: pass,
                         );
-                        // final user = userCredential.user;aloaloaloalohealo
-                        // Lấy dữ liệu tương ứng với email đăng nhập
                         user = await firestoreService.getData(email);
-                        // data = await NumerologyService().postData();
-                        // print('${user.year}');
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -116,11 +111,13 @@ class LoginBodyState extends State<LoginBody> {
                           ),
                         );
                       } on FirebaseAuthException catch (e) {
+                        print("Error Code: ${e.code}");
+                        print("Error Message: ${e.message}");
                         if (e.code == "user-not-found") {
                           // Show error dialog
                           showDialog(
                             context: context,
-                            builder: (BuildContext context) {
+                            builder: (context) {
                               return FormatDialog(
                                 styleText: const TextStyle(
                                     fontSize: 20.0,
@@ -136,10 +133,14 @@ class LoginBodyState extends State<LoginBody> {
                               );
                             },
                           );
-                        } else if (e.code == "wrong-password") {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          return;
+                        } else if (e.code == "invalid-credential") {
                           showDialog(
                             context: context,
-                            builder: (BuildContext context) {
+                            builder: (context) {
                               return FormatDialog(
                                 styleText: const TextStyle(
                                   color: Colors.black,
@@ -156,6 +157,10 @@ class LoginBodyState extends State<LoginBody> {
                               );
                             },
                           );
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          return;
                         }
                       }
                       setState(() {
@@ -184,9 +189,45 @@ class LoginBodyState extends State<LoginBody> {
             ),
             RoundedOutlineButton(
               textBtn: 'Sign in with Google',
-              press: () {},
               icon: 'assets/icons/google.png',
               margin: size.width * 0.14,
+              press: () async {
+                setState(() {
+                  _isLoading = true;
+                });
+                try {
+                  final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+                  if(googleSignInAccount != null){
+                    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+                    // Tạo credential để đăng nhập với Firebase
+                    final AuthCredential credential = GoogleAuthProvider.credential(
+                      accessToken: googleSignInAuthentication.accessToken,
+                      idToken: googleSignInAuthentication.idToken,
+                    );
+
+                    await FirebaseAuth.instance.signInWithCredential(credential);
+                  };
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Login successful!')),
+                  );
+                } on FirebaseAuthException catch (e) {
+                  print('FirebaseAuthException: ${e.message}');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error: ${e.message}')),
+                  );
+                } catch (e) {
+                  print('Error: $e');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('An unexpected error occurred')),
+                  );
+                } finally {
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }
+              },
             ),
             RoundedOutlineButton(
               textBtn: 'Sign in with Apple',

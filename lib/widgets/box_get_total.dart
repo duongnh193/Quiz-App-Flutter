@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constant.dart';
 
 class GetTotalContainer extends StatelessWidget {
   Icon icon;

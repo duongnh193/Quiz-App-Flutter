@@ -45,7 +45,7 @@ class FormatDialog extends StatelessWidget {
                 ),
             const SizedBox(height: 20.0),
             SizedBox(
-              width: 80,
+              width: 100,
               height: 40,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(

@@ -32,7 +32,7 @@ class RoundedOutlineButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
+            SizedBox(
               width: size.width * 0.06,
               child: Image.asset(
                 icon!,
@@ -42,7 +42,7 @@ class RoundedOutlineButton extends StatelessWidget {
               margin: EdgeInsets.only(left: margin!),
               child: Text(
                 textBtn!,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             ),
           ],

@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../../constant.dart';
 
 class NgayCaNhan extends StatelessWidget {
@@ -50,8 +49,8 @@ class NgayCaNhan extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     color: k3,
                                     borderRadius: BorderRadius.circular(8)),
-                                margin: EdgeInsets.all(10),
-                                padding: EdgeInsets.all(8),
+                                margin: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(8),
                                 child: Image.asset(
                                   'assets/icons/down.png',
                                   color: kSecondaryColor,
@@ -63,10 +62,10 @@ class NgayCaNhan extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        margin: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
                         child: Text(
                           text,
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                       Expanded(
@@ -74,9 +73,9 @@ class NgayCaNhan extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                margin: const EdgeInsets.symmetric(horizontal: 10),
                                 child: Text(detailText,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 18,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w400)),
@@ -101,7 +100,7 @@ class NgayCaNhan extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8), color: k3),
             child: Text(
               numberText,
-              style: TextStyle(
+              style: const TextStyle(
                   color: kSecondaryColor,
                   fontSize: 40,
                   fontFamily: 'Poppins',
