@@ -1,20 +1,15 @@
 // ignore: file_names
 // ignore: file_names
 import 'package:flutter/cupertino.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:quiz_app/screens/quiz/quiz_menu.dart';
-import '../homepage/component/home_appbar.dart';
-import 'AllCourses.dart';
 import 'CoursePlaylist.dart';
-import 'Filter.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/constant.dart';
 
-import 'Messages.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();

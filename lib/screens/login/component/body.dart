@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/controller/authentication/get_data.dart';
 // import '../../../controller/authentication/get_data.dart';
+import '../../../controller/session/session_helper.dart';
 import '../../../models/users.dart';
 import '../../forgot/forgot_screen.dart';
 import '../../homepage/homepage.dart';
@@ -92,16 +94,54 @@ class LoginBodyState extends State<LoginBody> {
                         _isLoading = true;
                       });
 
-                      final firestoreService = FirestoreService();
+                      // final firestoreService = FirestoreService();
 
                       try {
+                        final userDoc = FirebaseFirestore.instance.collection('failed_logins').doc(email);
+                        final userSnapshot = await userDoc.get();
+
+                        // Kiểm tra trạng thái khóa
+                        if (userSnapshot.exists) {
+                          final data = userSnapshot.data() as Map<String, dynamic>;
+                          final failedAttempts = data['failed_attempts'] ?? 0;
+                          final lockTime = data['lock_time'] ?? null;
+
+                          if (lockTime != null) {
+                            final now = DateTime.now().millisecondsSinceEpoch;
+                            if (now < lockTime) {
+                              final remainingTime = ((lockTime - now) / 1000).ceil();
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return FormatDialog(
+                                    styleText: const TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                    styleSubText: const TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400),
+                                    text: "Login failed",
+                                    subtext:
+                                    "Your account locked. Try again after $remainingTime seconds",
+                                  );
+                                },
+                              );
+                              setState(() {
+                                _isLoading = false;
+                              });
+                              return;
+                            }
+                          }
+                        }
+
                         UserCredential userCredential = await FirebaseAuth
                             .instance
                             .signInWithEmailAndPassword(
                           email: email,
                           password: pass,
                         );
-                        // user = await firestoreService.getData(email);
                         User? user = FirebaseAuth.instance.currentUser;
                         await user?.reload();
 
@@ -111,6 +151,8 @@ class LoginBodyState extends State<LoginBody> {
                             SnackBar(content: Text('Verification email sent again!Please verified before login!')),
                           );
                         } else {
+                          await userDoc.set({'failed_attempts': 0, 'lock_time': null});
+                          await SessionHelper.saveLoginTime();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -122,7 +164,7 @@ class LoginBodyState extends State<LoginBody> {
                         }
                       } on FirebaseAuthException catch (e) {
                         print("Error Code: ${e.code}");
-                        print("Error Message: ${e.message}");
+                        // print("Error Message: ${e.message}");
                         if (e.code == "user-not-found") {
                           // Show error dialog
                           showDialog(
@@ -148,25 +190,61 @@ class LoginBodyState extends State<LoginBody> {
                           });
                           return;
                         } else if (e.code == "invalid-credential") {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return FormatDialog(
-                                styleText: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                styleSubText: const TextStyle(
-                                    fontSize: 16.0,
+                          final userDoc = FirebaseFirestore.instance.collection('failed_logins').doc(email);
+                          final userSnapshot = await userDoc.get();
+                          int failedAttempts = 0;
+                          if (userSnapshot.exists) {
+                            final data = userSnapshot.data() as Map<String, dynamic>;
+                            failedAttempts = data['failed_attempts'] ?? 0;
+                          }
+
+                          failedAttempts += 1;
+
+                          if (failedAttempts >= 5) {
+                            // Khóa tài khoản trong 3 phút
+                            final lockTime = DateTime.now().add(Duration(minutes: 3)).millisecondsSinceEpoch;
+                            await userDoc.set({'failed_attempts': failedAttempts, 'lock_time': lockTime});
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return FormatDialog(
+                                  styleText: const TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w400),
-                                text: "Login failed",
-                                subtext:
-                                    "Wrong email or password. Please try again.",
-                              );
-                            },
-                          );
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  styleSubText: const TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400),
+                                  text: "Login failed",
+                                  subtext:
+                                  "Your account is locked. Please try again after 3 minutes!!!",
+                                );
+                              },
+                            );
+                          } else {
+                            await userDoc.set({'failed_attempts': failedAttempts, 'lock_time': null});
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return FormatDialog(
+                                  styleText: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  styleSubText: const TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400),
+                                  text: "Login failed",
+                                  subtext:
+                                  'Wrong password. Remaining attempts: ${5 - failedAttempts}',
+                                );
+                              },
+                            );
+                          }
                           setState(() {
                             _isLoading = false;
                           });
@@ -217,7 +295,7 @@ class LoginBodyState extends State<LoginBody> {
                     );
 
                     await FirebaseAuth.instance.signInWithCredential(credential);
-                  };
+                  }
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Login successful!')),

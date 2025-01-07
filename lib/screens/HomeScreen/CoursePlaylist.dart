@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CoursePlaylist extends StatefulWidget {
-  const CoursePlaylist({Key? key}) : super(key: key);
+  const CoursePlaylist({super.key});
 
   @override
   _CoursePlaylistState createState() => _CoursePlaylistState();
@@ -165,6 +165,12 @@ class _CoursePlaylistState extends State<CoursePlaylist> {
                         selectedColor: Colors.white,
                         borderWidth: 2,
                         borderRadius: BorderRadius.circular(20),
+                        onPressed: (int index) {
+                          setState(() {
+                            isSelected[index] = !isSelected[index];
+                          });
+                        },
+                        isSelected: isSelected,
                         children: <Widget>[
                           Container(
                               width: 150,
@@ -203,12 +209,6 @@ class _CoursePlaylistState extends State<CoursePlaylist> {
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold)))
                         ],
-                        onPressed: (int index) {
-                          setState(() {
-                            isSelected[index] = !isSelected[index];
-                          });
-                        },
-                        isSelected: isSelected,
                       )),
                     ])),
             SizedBox(

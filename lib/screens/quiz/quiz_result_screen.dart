@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/data/questions.dart';
-import 'package:quiz_app/models/quiz.dart';
-import 'package:quiz_app/screens/HomeScreen/Courses.dart';
 import 'package:quiz_app/screens/homepage/homepage.dart';
-import 'package:quiz_app/screens/quiz/quiz_menu.dart';
 
 import '../../constant.dart';
 import '../../controller/authentication/shared_preference_helper.dart';
@@ -11,7 +8,7 @@ import '../../models/generate_quiz.dart';
 import 'component/sumary_result.dart';
 
 class ResultsScreen extends StatelessWidget {
-  ResultsScreen({
+  const ResultsScreen({
     super.key,
     required this.chosenAnswers,
     required this.onRestart,

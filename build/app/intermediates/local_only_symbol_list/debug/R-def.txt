@@ -1,5 +1,6 @@
 R_DEF: Internal format may change without notice
 local
+drawable flutter_logo
 drawable launch_background
 mipmap ic_launcher
 string default_web_client_id

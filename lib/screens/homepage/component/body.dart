@@ -3,14 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:quiz_app/constant.dart';
 import 'package:quiz_app/screens/homepage/component/home_appbar.dart';
-import 'package:quiz_app/screens/login/component/body.dart';
-import 'package:quiz_app/widgets/format_dialog.dart';
-import 'package:page_transition/page_transition.dart';
-import '../../../widgets/button_menu.dart';
 // import '../../library/overview_screen.dart';
 // import '../../library/search_book_screen.dart';
 // import '../../numerology/numerology_screen.dart';
-import 'ngay_ca_nhan.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -40,7 +35,7 @@ class BodyState extends State<Body> {
             height: size.height * 0.02,
           ),
           Text(
-            '${formattedDate}',
+            formattedDate,
             style: TextStyle(
                 color: kSecondaryColor,
                 fontSize: 20,

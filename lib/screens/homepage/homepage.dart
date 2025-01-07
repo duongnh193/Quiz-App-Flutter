@@ -1,98 +1,29 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:quiz_app/controller/authentication/firebase_auth_services.dart';
+import 'package:quiz_app/controller/session/session_helper.dart';
+import '../../widgets/format_dialog.dart';
 import '../HomeScreen/Courses.dart';
 import '../HomeScreen/HomeScreen.dart';
 import '../HomeScreen/Messages.dart';
 import '../HomeScreen/Profile.dart';
 import '../HomeScreen/Search.dart';
-import 'component/body.dart';
-import 'package:page_transition/page_transition.dart';
-import '../../constant.dart';
-import '../../models/users.dart';
-import '../login/component/body.dart';
-import '../welcome/welcome_screen.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 
-// class HomePageScreen extends StatelessWidget {
-//   // static Numerology? number;
-//
-//   Users? user = LoginBodyState.user;
-//   HomePageScreen({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     print(user?.name?? "duongdz");
-//     return Scaffold(
-//       backgroundColor: kPrimaryColor,
-//       drawer: Drawer(
-//         child: SafeArea(
-//           child: Column(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Container(
-//                   margin: const EdgeInsets.symmetric(horizontal: 18),
-//                   child: Card(
-//                     child: ListTile(
-//                       leading: Container(
-//                         margin: const EdgeInsets.symmetric(vertical: 10),
-//                         width: 30,
-//                         height: 30,
-//                         decoration: BoxDecoration(
-//                           borderRadius: BorderRadius.circular(100),
-//                           color: kPrimaryColor,
-//                         ),
-//                       ),
-//                       title: Text(
-//                         '${user?.name?? "Guest"}',
-//                         style: const TextStyle(
-//                           color: Colors.black,
-//                           fontSize: 20,
-//                           fontWeight: FontWeight.w700,
-//                         ),
-//                       ),
-//                       // subtitle: Text(
-//                       //   '${user!.day}/${user!.month}/${user!.year}',
-//                       //   style: const TextStyle(
-//                       //     color: Colors.black,
-//                       //     fontSize: 13,
-//                       //     fontWeight: FontWeight.w400,
-//                       //   ),
-//                       // ),
-//                     ),
-//                   ),
-//                 ),
-//                 Container(
-//                   margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-//                   child: ElevatedButton(
-//                     child: const Text('Exit'),
-//                     onPressed: () async {
-//                       await FirebaseAuth.instance.signOut();
-//                       Navigator.push(
-//                         context,
-//                         PageTransition(
-//                           type: PageTransitionType.fade,
-//                           child: const WelcomeScreen(),
-//                         ),
-//                       );
-//                     },
-//                   ),
-//                 ),
-//               ]),
-//         ),
-//       ),
-//       body: Body(),
-//     );
-//   }
-// }
+import '../login/login_screen.dart';
 
 class HomePageScreen extends StatefulWidget {
-  const HomePageScreen({super.key});
+  Timer? _sessionTimer;
+  HomePageScreen({super.key});
   // final String title;
 
   @override
   State<HomePageScreen> createState() => _HomePageScreenState();
 }
 
-class _HomePageScreenState extends State<HomePageScreen> {
+class _HomePageScreenState extends State<HomePageScreen> with WidgetsBindingObserver {
+  Timer? _sessionTimer;
   int index = 0;
   List<bool> state_b = [true, false, false, false, false];
   List<Widget> widgets = [
@@ -102,6 +33,83 @@ class _HomePageScreenState extends State<HomePageScreen> {
     const Messages(),
     const Profile()
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _startSessionTimer();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_sessionTimer == null) {
+      return;
+    }
+    if (state == AppLifecycleState.resumed || state == AppLifecycleState.paused) {
+      _checkSession();
+    }
+  }
+
+  Future<void> _checkSession() async {
+    final isSessionValid = await SessionHelper.isSessionValid();
+    if (!isSessionValid) {
+      await SessionHelper.clearSession();
+      _logout();
+      return;
+    }
+  }
+
+  void _startSessionTimer() {
+    _sessionTimer?.cancel();
+    if (_sessionTimer?.isActive == true) return;
+    _sessionTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
+      await _checkSession();
+    });
+  }
+
+  void _logout() async {
+    if(!mounted) return;
+    _sessionTimer?.cancel();
+    _sessionTimer = null;
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return FormatDialog(
+          styleText: const TextStyle(
+            color: Colors.black,
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+          styleSubText: const TextStyle(
+              fontSize: 16.0,
+              color: Colors.black,
+              fontWeight: FontWeight.w400),
+          text: "End session",
+          subtext:
+          "The sesssion ended. Please login again to continue",
+        );
+      },
+    );
+    FirebaseAuthServices authServices = FirebaseAuthServices();
+    await authServices.signOut();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false,
+    );
+  }
+
+  Future<void> _onUserInteraction() async {
+    print('User interacted at: ${DateTime.now()}');
+    await SessionHelper.saveLoginTime();
+  }
 
   @override
   Widget build(BuildContext context) {

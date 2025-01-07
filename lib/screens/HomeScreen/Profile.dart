@@ -4,7 +4,7 @@ import 'package:quiz_app/constant.dart';
 import 'package:quiz_app/screens/welcome/welcome_screen.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  const Profile({super.key});
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -92,7 +92,7 @@ class _ProfileState extends State<Profile> {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                bool _isObscure = true;
+                                bool isObscure = true;
 
                                 return AlertDialog(
                                   content: SizedBox(
@@ -115,7 +115,7 @@ class _ProfileState extends State<Profile> {
                                                       BorderRadius.circular(
                                                           10)),
                                               child: TextField(
-                                                obscureText: _isObscure,
+                                                obscureText: isObscure,
                                                 style: const TextStyle(
                                                     fontSize: 17,
                                                     textBaseline:

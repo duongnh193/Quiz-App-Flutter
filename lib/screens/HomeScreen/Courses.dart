@@ -5,10 +5,9 @@ import 'package:quiz_app/models/generate_quiz.dart';
 import 'package:quiz_app/screens/homepage/homepage.dart';
 
 import '../../constant.dart';
-import '../../data/questions.dart';
 
 class Courses extends StatefulWidget {
-  const Courses({Key? key}) : super(key: key);
+  const Courses({super.key});
 
   @override
   _CoursesState createState() => _CoursesState();
@@ -37,6 +36,7 @@ class _CoursesState extends State<Courses> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(

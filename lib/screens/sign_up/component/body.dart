@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/constant.dart';
-import '../../../widgets/date_picker_field.dart';
 import '../../../widgets/format_dialog.dart';
 import '../../login/component/account_check.dart';
 import '../../login/component/or_divider.dart';

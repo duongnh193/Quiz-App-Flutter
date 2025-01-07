@@ -20,6 +20,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "awesome_notifications",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/awesome_notifications-0.8.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/boolean_selector-2.1.1",
       "packageUri": "lib/",
@@ -66,6 +72,12 @@
       "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.8",
       "packageUri": "lib/",
       "languageVersion": "3.1"
+    },
+    {
+      "name": "dbus",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/dbus-0.7.10",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "fake_async",
@@ -146,10 +158,40 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "flutter_datetime_picker_plus",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/flutter_datetime_picker_plus-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/flutter_lints-5.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.5"
+    },
+    {
+      "name": "flutter_local_notifications",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/flutter_local_notifications-17.2.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_local_notifications_linux",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/flutter_local_notifications_linux-4.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_local_notifications_platform_interface",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/flutter_local_notifications_platform_interface-7.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_session_manager",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/flutter_session_manager-1.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "flutter_svg",
@@ -219,15 +261,15 @@
     },
     {
       "name": "http_parser",
-      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/http_parser-4.1.1",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/http_parser-4.1.2",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
     {
       "name": "intl",
-      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/intl-0.20.1",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/intl-0.19.0",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.0"
     },
     {
       "name": "leak_tracker",
@@ -279,9 +321,9 @@
     },
     {
       "name": "page_transition",
-      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/page_transition-2.1.0",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/page_transition-2.2.1",
       "packageUri": "lib/",
-      "languageVersion": "2.17"
+      "languageVersion": "3.5"
     },
     {
       "name": "path",
@@ -333,7 +375,7 @@
     },
     {
       "name": "shared_preferences",
-      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/shared_preferences-2.3.4",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/shared_preferences-2.3.5",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
@@ -416,6 +458,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "timezone",
+      "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/timezone-0.9.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "typed_data",
       "rootUri": "file:///home/duongnh/.pub-cache/hosted/pub.dev/typed_data-1.4.0",
       "packageUri": "lib/",
@@ -476,7 +524,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2024-12-23T13:23:51.422937Z",
+  "generated": "2025-01-06T15:56:21.954554Z",
   "generator": "pub",
   "generatorVersion": "3.6.0",
   "flutterRoot": "file:///home/duongnh/Projects/Flutter/FlutterSdk/flutter",

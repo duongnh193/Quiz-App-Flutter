@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quiz_app/models/quiz.dart';
-import 'package:quiz_app/screens/HomeScreen/HomeScreen.dart';
 import 'package:quiz_app/screens/homepage/homepage.dart';
 
 import '../../constant.dart';
@@ -38,7 +37,7 @@ class _QuizMenuState extends State<QuizMenu> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return const HomePageScreen();
+                        return HomePageScreen();
                       },
                     ),
                   );
