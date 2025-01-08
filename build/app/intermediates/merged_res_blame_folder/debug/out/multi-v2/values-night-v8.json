@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.quiz_app-mergeDebugResources-61:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.quiz_app-mergeDebugResources-62:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
                     "source": "/home/duongnh/Projects/Flutter/flutterProject/Quiz-App-Flutter/android/app/src/main/res/values-night/styles.xml",

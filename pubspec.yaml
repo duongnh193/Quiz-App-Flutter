@@ -51,6 +51,8 @@ dependencies:
   flutter_local_notifications: ^17.1.2
   flutter_datetime_picker_plus: ^2.1.0
   flutter_session_manager: ^1.0.3
+  no_screenshot: ^0.3.1
+  local_auth: ^2.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,0 +1,1 @@
+com.flutterplaza.no_screenshot

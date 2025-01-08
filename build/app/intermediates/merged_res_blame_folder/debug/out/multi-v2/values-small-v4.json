@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.quiz_app-mergeDebugResources-61:/values-small-v4/values-small-v4.xml",
+            "outputFile": "com.example.quiz_app-mergeDebugResources-62:/values-small-v4/values-small-v4.xml",
             "map": [
                 {
                     "source": "/home/duongnh/.gradle/caches/transforms-3/386504f2774f321f10606023218ba015/transformed/material-1.11.0/res/values-small-v4/values-small-v4.xml",

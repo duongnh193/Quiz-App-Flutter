@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz_app/controller/authentication/fingerprint_services.dart';
 import 'package:quiz_app/controller/authentication/get_data.dart';
 // import '../../../controller/authentication/get_data.dart';
 import '../../../controller/session/session_helper.dart';
@@ -73,18 +74,63 @@ class LoginBodyState extends State<LoginBody> {
                 pass = value;
               },
             ),
-            ForgotButton(
-              textBtn: 'Forgot Password?',
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const ForgotScreen();
-                    },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ForgotButton(
+                  textBtn: 'Forgot Password?',
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const ForgotScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(
+                  width: 170,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    bool auth = await FingerAuth.authentication();
+                    print("can authenticate: $auth");
+                    if(auth){
+                      await SessionHelper.saveLoginTime();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return HomePageScreen();
+                          },
+                        ),
+                      );
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(50), // Hình tròn
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.5),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    width: 40,
+                    height: 40,
+                    child: const Icon(
+                      Icons.fingerprint,
+                      color: Colors.white,
+                      size: 30,
+                    ),
                   ),
-                );
-              },
+                ),
+              ],
             ),
             _isLoading
                 ? const CircularProgressIndicator()
@@ -300,6 +346,16 @@ class LoginBodyState extends State<LoginBody> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Login successful!')),
                   );
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return HomePageScreen();
+                      },
+                    ),
+                  );
+
                 } on FirebaseAuthException catch (e) {
                   print('FirebaseAuthException: ${e.message}');
                   ScaffoldMessenger.of(context).showSnackBar(

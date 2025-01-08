@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.quiz_app-mergeDebugResources-61:/values-h720dp-v13/values-h720dp-v13.xml",
+            "outputFile": "com.example.quiz_app-mergeDebugResources-62:/values-h720dp-v13/values-h720dp-v13.xml",
             "map": [
                 {
                     "source": "/home/duongnh/.gradle/caches/transforms-3/f3e01c95a04b87be1a2f2ed87103c6d5/transformed/appcompat-1.6.1/res/values-h720dp-v13/values-h720dp-v13.xml",

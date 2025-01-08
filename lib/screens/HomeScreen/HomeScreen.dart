@@ -114,11 +114,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.transparent,
                       child: Column(
                         children: [
-                          // Image.asset(
-                          //   'assets/images/onestar.jpg',
-                          //   width: 100,
-                          //   height: 100,
-                          // ),
                           const SizedBox(
                             height: 5,
                           ),
@@ -154,10 +149,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 width: 5,
                               ),
-                              // Text(
-                              //   '4.9 (522 reviews)',
-                              //   style: TextStyle(color: kSecondaryColor, fontSize: 15),
-                              // )
                             ],
                           ),
                           const SizedBox(
@@ -173,76 +164,77 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 20,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor,
-                      borderRadius: BorderRadius.circular(25)),
-                  width: size.width*0.6,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Column(
-                      children: [
-                        // Image.asset(
-                        //   'assets/images/onestar.jpg',
-                        //   width: 100,
-                        //   height: 100,
-                        // ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              CupertinoIcons.layers,
-                              color: kSecondaryColor,
-                              size: 20,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              'Intermediate Level',
-                              style: TextStyle(color: kSecondaryColor, fontSize: 20),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.orange,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.orange,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            // Text(
-                            //   '4.9 (522 reviews)',
-                            //   style: TextStyle(color: kSecondaryColor, fontSize: 15),
-                            // )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 6,
-                        )
-                      ],
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const QuizMenu();
+                      },
                     ),
-                  )),
+                  );
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(25)),
+                    width: size.width*0.6,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                CupertinoIcons.layers,
+                                color: kSecondaryColor,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Intenmediate Level',
+                                style: TextStyle(color: kSecondaryColor, fontSize: 20),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: Colors.orange,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Colors.orange,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 6,
+                          )
+                        ],
+                      ),
+                    )),
+              ),
             ],
           ),
           const SizedBox(
